@@ -17,6 +17,7 @@ app.use("/api/teacher", require("./WorkPut/TeacherFile/TeacherRouter"));
 app.use("/api/class", require("./WorkPut/classFile/classRouter"));
 app.use("/api/student", require("./WorkPut/studentsFile/studentRouter"));
 app.use("/api/expense", require("./WorkPut/Expense/ExpensesRoute"));
+app.use("/api/subject", require("./WorkPut/subjectFile/subjectRouter"));
 
 app.listen(port, () => {
   console.log("server is now connected");

@@ -5,7 +5,7 @@ const url =
 const urls = "mongodb://localhost/schoolManagementDB";
 
 mongoose
-  .connect(url)
+  .connect(urls)
   .then(() => {
     console.log("database connected...");
   })

@@ -126,7 +126,6 @@ const verifiedSchool = async (req, res) => {
           {
             verifiedToken: "",
             verified: true,
-
             code: user.schoolCode.split(" ")[2],
           },
           { new: true }
@@ -215,7 +214,7 @@ const newPasswordRequest = async (req, res) => {
 
         res.status(200).json({
           message:
-            "Please goto your mail to verify your account before you can sign in",
+            "Please goto your mail to verify your account before you reset your password", 
         });
       } else {
         res
