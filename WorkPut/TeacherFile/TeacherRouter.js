@@ -27,7 +27,7 @@ router.route("/:id/:token").get(verifiedTeacher);
 router.route("/reset").post(newPasswordRequest);
 router.route("/reset/:id/:token").post(passwordReset);
 
-// router.route("/:id/school").get(getTeacherSchool);
+router.route("/:id/school").get(getTeacherSchool);
 router.route("/:id").get(getTeacher);
 
 router

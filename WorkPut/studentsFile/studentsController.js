@@ -20,7 +20,7 @@ const transport = nodemailer.createTransport({
 
 const createStudent = async (req, res) => {
   try {
-    const { fullName, teacherCode, classCode } = req.body;
+    const { fullName, teacherCode, classCode, gender } = req.body;
 
     const getURL = await classModel.findOne({ classCode });
 
@@ -41,13 +41,15 @@ const createStudent = async (req, res) => {
       ) {
         const newTeacher = new studentModel({
           fullName,
+          gender,
           schoolName: getSchool.schoolName,
           email: `${emailData1}@${emailData}.com`,
           password: hashed,
           verifiedToken: getSchool.schoolCode,
           studentCode: getToken,
-          teachCode: getSchool.teacherCode,
+          teachCode: getSchool.teachCode,
           classCode: getSchool.classCode,
+          nameOfClass: getSchool.className,
         });
 
         newTeacher.class = getSchool;
@@ -141,34 +143,56 @@ const getStudent = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
-const deleteStudent = async (req, res) => {
+const getAClassStudent = async (req, res) => {
   try {
-    const getTeacher = await classModel.findById(req.params.id);
-    const remove = await studentModel.findByIdAndRemove(req.params.student);
-
-    getTeacher.student.pull(remove);
-    getTeacher.save();
-
-    res.status(200).json({ message: "STudent deleted" });
+    const users = await studentModel
+      .findById(req.params.student)
+      .sort({ createdAt: -1 });
+    res.status(200).json({ message: "Student found", data: users });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
+const deleteStudent = async (req, res) => {
+  try {
+    const getClass = await classModel.findById(req.params.id);
+    const remove = await studentModel.findByIdAndRemove(req.params.student);
+
+    getClass.student.pull(remove);
+    getClass.save();
+
+    res.status(200).json({ message: "STudent deleted" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 const updateStudent = async (req, res) => {
   try {
-    const { gender, profile, phoneNumber, displayName } = req.body;
+    const {
+      profile,
+      parentName1,
+      parentName2,
+      DOB,
+      Address,
+      parentPhone,
+      FathersOccupation,
+    } = req.body;
 
     const image = await cloudinary.uploader.upload(req.file.path);
 
     const users = await studentModel.findByIdAndUpdate(
       req.params.id,
       {
-        gender,
+        parentName1,
+        parentName2,
+        parentPhone,
         profile,
-        phoneNumber,
-        displayName,
+        DOB,
+        Address,
+        FathersOccupation,
         avatar: image.secure_url,
         avatarID: image.public_id,
       },
@@ -247,4 +271,5 @@ module.exports = {
   getStudent,
   passwordReset,
   newPasswordRequest,
+  getAClassStudent,
 };

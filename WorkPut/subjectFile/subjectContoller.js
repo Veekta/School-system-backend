@@ -1,6 +1,6 @@
 const subjectModel = require("../../model/subjectModel");
 const classModel = require("../../model/classModel");
-const studentModel = require("../../model/studentModel");
+const teacherModel = require("../../model/TeacherModel");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -21,11 +21,10 @@ const createSubject = async (req, res) => {
   try {
     const { subjectName, subjectTeacher } = req.body;
 
-    const getURL = await classModel.find();
+    const getURL = await classModel.findById(req.params.id);
 
     if (getURL) {
-      const getSchool = await classModel.findById(req.params.id);
-
+      const getSchool = getURL;
       const newSubject = new subjectModel({
         subjectName,
         subjectTeacher,
@@ -53,12 +52,14 @@ const createSubject = async (req, res) => {
   }
 };
 
-const getTeacherSchool = async (req, res) => {
+const AllSubjects = async (req, res) => {
   try {
     // const users = await teacherModel.findById(req.params.id);
 
-    const users = await teacherModel.findById(req.params.id).populate("admin");
-    res.status(200).json({ message: "Teacher found", data: users });
+    const users = await teacherModel
+      .findById(req.params.teacherID)
+      .populate("class");
+    res.status(200).json({ message: "All Subjects", data: users });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -100,5 +101,6 @@ module.exports = {
   //   getStudents,
 
   //   getStudent,
+  AllSubjects,
   getSubjectsInAClass,
 };
