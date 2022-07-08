@@ -168,12 +168,25 @@ const getTeachers = async (req, res) => {
 
 const getTeacher = async (req, res) => {
   try {
-    const users = await teacherModel.findById(req.params.id).populate("admin");
+    const users = await teacherModel
+      .findById(req.params.id)
+      .populate("students");
     res.status(200).json({ message: "Teacher found", data: users });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
+
+// const getStudents = async (req, res) => {
+//   try {
+//     const users = await teacherModel
+//       .findById(req.params.id)
+//       .populate("students");
+//     res.status(200).json({ message: "Teacher found", data: users });
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
 
 const deleteTeacher = async (req, res) => {
   try {
@@ -192,9 +205,18 @@ const deleteTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
   try {
-    const { gender, profile, fullName, phoneNumber, displayName } = req.body;
+    const {
+      gender,
+      profile,
+      fullName,
+      phoneNumber,
+      displayName,
+      subject,
+      religion,
+      address,
+    } = req.body;
 
-    const image = await cloudinary.uploader.upload(req.file.path);
+    // const image = await cloudinary.uploader.upload(req.file.path);
 
     const users = await teacherModel.findByIdAndUpdate(
       req.params.id,
@@ -204,8 +226,11 @@ const updateTeacher = async (req, res) => {
         fullName,
         phoneNumber,
         displayName,
-        avatar: image.secure_url,
-        avatarID: image.public_id,
+        subject,
+        religion,
+        address,
+        // avatar: image.secure_url,
+        // avatarID: image.public_id,
       },
       { new: true }
     );
@@ -290,4 +315,5 @@ module.exports = {
   newPasswordRequest,
   getTeachers,
   getTeacherSchool,
+  // getStudents,
 };

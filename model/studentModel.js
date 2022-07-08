@@ -33,6 +33,14 @@ const studentModel = mongoose.Schema(
     parentPhone: {
       type: Number,
     },
+    feeStatus: {
+      type: Boolean,
+      Default: false,
+    },
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "admins",
+    },
 
     fullName: {
       type: String,
@@ -73,12 +81,17 @@ const studentModel = mongoose.Schema(
       default: true,
     },
 
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "admins",
-    },
+    performance: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "performance",
+      },
+    ],
 
     gender: {
+      type: String,
+    },
+    religion: {
       type: String,
     },
     profile: {

@@ -20,9 +20,10 @@ const transport = nodemailer.createTransport({
 
 const createStudent = async (req, res) => {
   try {
-    const { fullName, teacherCode, classCode, gender } = req.body;
-
+    const { fullName, teacherCode, classCode, gender, feeStatus } = req.body;
+    const getTeacher = await teacherModel.findById(req.params.teacher);
     const getURL = await classModel.findOne({ classCode });
+    const getAdmin = await adminModel.findById(req.params.admin);
 
     if (getURL) {
       const getToken = crypto.randomBytes(2).toString("hex");
@@ -42,6 +43,7 @@ const createStudent = async (req, res) => {
         const newTeacher = new studentModel({
           fullName,
           gender,
+          feeStatus,
           schoolName: getSchool.schoolName,
           email: `${emailData1}@${emailData}.com`,
           password: hashed,
@@ -52,9 +54,16 @@ const createStudent = async (req, res) => {
           nameOfClass: getSchool.className,
         });
 
+        newTeacher.classTeacher = getTeacher;
+        getTeacher.students.push(mongoose.Types.ObjectId(newTeacher._id));
+        getTeacher.save();
+
+        newTeacher.students = getAdmin;
+        getAdmin.students.push(mongoose.Types.ObjectId(newTeacher._id));
+        getAdmin.save();
+
         newTeacher.class = getSchool;
         newTeacher.save();
-
         getSchool.student.push(mongoose.Types.ObjectId(newTeacher._id));
         getSchool.save();
 
@@ -135,40 +144,92 @@ const getStudents = async (req, res) => {
   }
 };
 
-const getStudent = async (req, res) => {
-  try {
-    const users = await classModel.findById(req.params.id).populate("student");
-    res.status(200).json({ message: "Student found", data: users });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
-const getAClassStudent = async (req, res) => {
-  try {
-    const users = await studentModel
-      .findById(req.params.student)
-      .sort({ createdAt: -1 });
-    res.status(200).json({ message: "Student found", data: users });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+// const getStudent = async (req, res) => {
+//   try {
+//     const users = await classModel.findById(req.params.id).populate("student");
+//     res.status(200).json({ message: "Student found", data: users });
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
 
-const deleteStudent = async (req, res) => {
+const getTeacher = async (req, res) => {
   try {
-    const getClass = await classModel.findById(req.params.id);
-    const remove = await studentModel.findByIdAndRemove(req.params.student);
+    // const users = await teacherModel.findById(req.params.id);
 
-    getClass.student.pull(remove);
-    getClass.save();
-
-    res.status(200).json({ message: "STudent deleted" });
+    const users = await teacherModel
+      .findById(req.params.teacher)
+      .populate("class");
+    res.status(200).json({ message: "Teacher found", data: users });
   } catch (error) {
     res.status(404).json({ message: error.message });
     console.log(error);
   }
 };
 
+const getStudent = async (req, res) => {
+  try {
+    const users = await studentModel
+      .findById(req.params.id)
+      .sort({ createdAt: -1 });
+    res.status(200).json({ message: "Student found", data: users });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log(error);
+  }
+};
+
+const getAClassStudent = async (req, res) => {
+  try {
+    const users = await classModel
+      .findById(req.params.classID)
+      .populate("student");
+    res.status(200).json({ message: "Student found", data: users });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+const deleteStudentFromAdmin = async (req, res) => {
+  try {
+    const remove = await studentModel.findByIdAndRemove(req.params.id);
+    const getAdmin = await adminModel.findById(req.params.admin);
+    getAdmin.students.pull(remove);
+    getAdmin.save();
+
+    res.status(200).json({ message: "Student deleted" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log(error);
+  }
+};
+const deleteFromTeacher = async (req, res) => {
+  try {
+    const remove = await teacherModel.findByIdAndRemove(req.params.id);
+    const getTeacher = await teacherModel.findById(req.params.teacher);
+    getTeacher.students.pull(remove);
+    getTeacher.save();
+
+    res.status(200).json({ message: "Student deleted" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log(error);
+  }
+};
+
+const deleteStudenFromClass = async (req, res) => {
+  try {
+    const remove = await studentModel.findByIdAndRemove(req.params.id);
+    const getClass = await classModel.findById(req.params.admin);
+    getClass.students.pull(remove);
+    getClass.save();
+
+    res.status(200).json({ message: "Student deleted" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+    console.log(error);
+  }
+};
 const updateStudent = async (req, res) => {
   try {
     const {
@@ -179,9 +240,10 @@ const updateStudent = async (req, res) => {
       Address,
       parentPhone,
       FathersOccupation,
+      religion,
     } = req.body;
 
-    const image = await cloudinary.uploader.upload(req.file.path);
+    // const image = await cloudinary.uploader.upload(req.file.path);
 
     const users = await studentModel.findByIdAndUpdate(
       req.params.id,
@@ -193,8 +255,9 @@ const updateStudent = async (req, res) => {
         DOB,
         Address,
         FathersOccupation,
-        avatar: image.secure_url,
-        avatarID: image.public_id,
+        religion,
+        // avatar: image.secure_url,
+        // avatarID: image.public_id,
       },
       { new: true }
     );
@@ -265,11 +328,15 @@ const passwordReset = async (req, res) => {
 module.exports = {
   createStudent,
   signinStudent,
-  deleteStudent,
+  deleteStudentFromAdmin,
   getStudents,
   updateStudent,
   getStudent,
   passwordReset,
   newPasswordRequest,
   getAClassStudent,
+  getTeacher,
+  deleteFromTeacher,
+  getTeacherSchool,
+  deleteStudenFromClass,
 };

@@ -2,13 +2,16 @@ const express = require("express");
 const router = express.Router();
 const {
   createSubject,
+  getAllSubjects,
   getSubjectsInAClass,
-  AllSubjects,
+  getStudentsPerformance,
+  getClass,
 } = require("../subjectFile/subjectContoller");
 
 router.route("/:id").post(createSubject);
-// router.route("/").get(getSubjects);
-router.route("/:classID").get(getSubjectsInAClass);
-router.route("/:classID").get(getSubjectsInAClass);
-router.route("/:teacherID").get(getSubjectsInAClass);
+router.route("/:subject").get(getStudentsPerformance);
+router.route("/").get(getAllSubjects);
+router.route("/:classID").get(getClass);
+// router.route("/:classID").get(getSubjectsInAClass);
+router.route("/:classID/class").get(getSubjectsInAClass);
 module.exports = router;

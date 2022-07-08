@@ -2,7 +2,7 @@ const {
   createTeacher,
   verifiedTeacher,
   signinTeacher,
-
+  // getStudents,
   getTeachers,
   getTeacher,
   deleteTeacher,
@@ -29,11 +29,12 @@ router.route("/reset/:id/:token").post(passwordReset);
 
 router.route("/:id/school").get(getTeacherSchool);
 router.route("/:id").get(getTeacher);
+// router.route("/:id/students").get(getStudents);
 
 router
-  .route("/:id/:teacher")
+  .route("/:id/")
   // .get(getTeacher)
-  .patch(upload, updateTeacher)
+  .patch(updateTeacher)
   .delete(deleteTeacher);
 
 module.exports = router;

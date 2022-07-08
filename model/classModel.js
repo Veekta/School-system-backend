@@ -30,8 +30,7 @@ const classModel = mongoose.Schema(
         ref: "students",
       },
     ],
-
-    subjects: [
+    subject: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "subjects",

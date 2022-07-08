@@ -8,18 +8,28 @@ const subjectModel = mongoose.Schema(
     subjectTeacher: {
       type: String,
     },
+    subjectType: {
+      type: String,
+    },
     className: {
       type: String,
     },
     schoolName: {
       type: String,
     },
-    // teachCode: {
-    //   type: String,
-    // },
+    teachCode: {
+      type: String,
+    },
     classCode: {
       type: String,
     },
+    performances: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "performance",
+      },
+    ],
+
     class: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "classes",

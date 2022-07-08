@@ -9,6 +9,8 @@ const {
   getSchool,
   getSchools,
   getSchoolTeacher,
+  getStudentsDetail,
+  getStudent,
 } = require("../AdminController/AdminController");
 
 const upload = require("../../../utils/multer");
@@ -26,6 +28,8 @@ router.route("/reset").post(newPasswordRequest);
 router.route("/reset/:id/:token").post(passwordReset);
 
 router.route("/:id/teachers/get").get(getSchoolTeacher);
+router.route("/:id/students/get").get(getStudentsDetail);
+router.route("/:id/students/get/:id").get(getStudent);
 
 router
   .route("/:id")

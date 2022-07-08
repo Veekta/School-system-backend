@@ -23,6 +23,25 @@ const getSchoolTeacher = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+const getStudentsDetail = async (req, res) => {
+  try {
+    const users = await adminModel
+      .findById(req.params.id)
+      .populate({ path: "students", options: { sort: { createdAt: -1 } } });
+    res.status(200).json({ message: "Teachers found", data: users });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+const getStudent = async (req, res) => {
+  try {
+    const users = await adminModel.findById(req.params.id).populate("students");
+    res.status(200).json({ message: "Student found", data: users });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
 const getSchools = async (req, res) => {
   try {
@@ -126,6 +145,7 @@ const verifiedSchool = async (req, res) => {
           {
             verifiedToken: "",
             verified: true,
+
             code: user.schoolCode.split(" ")[2],
           },
           { new: true }
@@ -214,7 +234,7 @@ const newPasswordRequest = async (req, res) => {
 
         res.status(200).json({
           message:
-            "Please goto your mail to verify your account before you reset your password", 
+            "Please goto your mail to verify your account before you can sign in",
         });
       } else {
         res
@@ -265,4 +285,6 @@ module.exports = {
   getSchool,
   getSchools,
   getSchoolTeacher,
+  getStudentsDetail,
+  getStudent,
 };
