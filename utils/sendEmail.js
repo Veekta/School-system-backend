@@ -4,11 +4,11 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const CLIENT_ID =
-  "428581574814-4k3k7cffju68ecp7354edde8qit1areg.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
+  "922981826695-rviuikdrd4rk1kbsake7iusml8qb2ibc.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
 const CLIENT_REDIRECT = "https://developers.google.com/oauthplayground";
 const CLIENT_TOKEN =
-  "1//04cBUV6HZTt_ACgYIARAAGAQSNwF-L9Ir3pm5uLRde4lRcuV5A5AKlbpB49gnN8mwGZAr0QrY157QBGjbcyGwfxGuh7zuMrNDzW8";
+  "1//04C7dWmo7YblKCgYIARAAGAQSNwF-L9IrEt7Td5GJtrIEB-g_xad5nm-lvt6tP-RxNPBAoaHu0q1jNXf8c20Bsv89GRyec94Gri4";
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -29,7 +29,7 @@ const verifiedMail = async (email, user) => {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "skoolkodecodelab@gmail.com",
+        user: "skuulkude@gmail.com",
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refresh_token: CLIENT_TOKEN,
@@ -38,7 +38,7 @@ const verifiedMail = async (email, user) => {
     });
 
     const mailOptions = {
-      from: "Skuul ✉️ <skoolkodecodelab@gmail.com",
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
       to: email,
       subject: "Account Verification",
       html: `
@@ -50,18 +50,13 @@ const verifiedMail = async (email, user) => {
             `,
     };
 
-    const result = transport.sendMail(mailOptions, (info, error) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(info.response);
-      }
-    });
+    const result = transport.sendMail(mailOptions);
     return result;
   } catch (error) {
     return error;
   }
 };
+
 const reSendMail = async (email, user, code) => {
   try {
     const getToken = crypto.randomBytes(10).toString("hex");
@@ -73,7 +68,7 @@ const reSendMail = async (email, user, code) => {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "skoolkodecodelab@gmail.com",
+        user: "skuulkude@gmail.com",
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refresh_token: CLIENT_TOKEN,
@@ -82,7 +77,7 @@ const reSendMail = async (email, user, code) => {
     });
 
     const mailOptions = {
-      from: "Skuul ✉️ <skoolkodecodelab@gmail.com>",
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
       to: email,
       subject: "Account re-Verification",
       html: `
@@ -100,6 +95,7 @@ const reSendMail = async (email, user, code) => {
     return error;
   }
 };
+
 const resetMail = async (email, user) => {
   try {
     const getToken = crypto.randomBytes(10).toString("hex");
@@ -111,7 +107,7 @@ const resetMail = async (email, user) => {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "skoolkodecodelab@gmail.com",
+        user: "skuulkude@gmail.com",
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refresh_token: CLIENT_TOKEN,
@@ -120,7 +116,7 @@ const resetMail = async (email, user) => {
     });
 
     const mailOptions = {
-      from: "Skuul ✉️ <skoolkodecodelab@gmail.com>",
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
       to: email,
       subject: "Reset Password Request",
       html: `
@@ -138,6 +134,8 @@ const resetMail = async (email, user) => {
     return error;
   }
 };
+
+//Teachers
 const verifiedTeacherMail = async (email, newTeacher, code) => {
   try {
     const getToken = crypto.randomBytes(10).toString("hex");
@@ -149,7 +147,7 @@ const verifiedTeacherMail = async (email, newTeacher, code) => {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "skoolkodecodelab@gmail.com",
+        user: "skuulkude@gmail.com",
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refresh_token: CLIENT_TOKEN,
@@ -158,7 +156,7 @@ const verifiedTeacherMail = async (email, newTeacher, code) => {
     });
 
     const mailOptions = {
-      from: "Skuul ✉️ <skoolkodecodelab@gmail.com>",
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
       to: email,
       subject: "Teacher Account Verification",
       html: `
@@ -170,18 +168,13 @@ const verifiedTeacherMail = async (email, newTeacher, code) => {
             `,
     };
 
-    const result = transport.sendMail(mailOptions, (info, error) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(info.response);
-      }
-    });
+    const result = transport.sendMail(mailOptions);
     return result;
   } catch (error) {
     return error;
   }
 };
+
 const reSendTeacherMail = async (email, user, code) => {
   try {
     const getToken = crypto.randomBytes(10).toString("hex");
@@ -193,7 +186,7 @@ const reSendTeacherMail = async (email, user, code) => {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "skoolkodecodelab@gmail.com",
+        user: "skuulkude@gmail.com",
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refresh_token: CLIENT_TOKEN,
@@ -202,13 +195,13 @@ const reSendTeacherMail = async (email, user, code) => {
     });
 
     const mailOptions = {
-      from: "Skuul ✉️ <skoolkodecodelab@gmail.com>",
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
       to: email,
       subject: "Account re-Verification",
       html: `
 <h3>
     This mail, is for account verification... Please use the <a
-    href="http://localhost:2332/api/teacher/${user._id}/${user.schoolCode}"
+    href="http://localhost:2331/api/teacher/${user._id}/${user.schoolCode}"
     >Link to Finish</a> up your account creation 
 </h3>
 `,
@@ -221,10 +214,49 @@ const reSendTeacherMail = async (email, user, code) => {
   }
 };
 
+const resetTeacherMail = async (email, user) => {
+  try {
+    const getToken = crypto.randomBytes(10).toString("hex");
+    const token = jwt.sign({ getToken }, "ThisIsTheCode");
+
+    const accessToken = await oAuth2Client.getAccessToken();
+
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "skuulkude@gmail.com",
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refresh_token: CLIENT_TOKEN,
+        accessToken: accessToken.token,
+      },
+    });
+
+    const mailOptions = {
+      from: "Skuul ✉️ <skuulkude@gmail.com>",
+      to: email,
+      subject: "Reset Password Request",
+      html: `
+    <h3>
+        This mail, is sent because you requested for a password reset... Please use the <a
+        href="http://localhost:3000/api/admin/reset/${user._id}/${token}"
+        >Link to Finish</a> up your password reset request!  
+    </h3>
+    `,
+    };
+
+    const result = transport.sendMail(mailOptions);
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 module.exports = {
-  verifiedMail,
-  resetMail,
-  reSendMail,
   verifiedTeacherMail,
   reSendTeacherMail,
+  resetTeacherMail,
+  verifiedMail,
+  reSendMail,
+  resetMail,
 };
