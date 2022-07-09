@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const localURL = "mongodb://localhost/MySchoolDatabase";
+// const localURL = "mongodb://localhost/MySchoolDatabase";
 const url = process.env.URL;
 
 mongoose
