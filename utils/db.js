@@ -5,7 +5,7 @@ const localURL = "mongodb://localhost/MySchoolDatabase";
 // const url = process.env.URL;
 
 mongoose
-  .connect(localURL)
+  .connect(url)
   .then(() => {
     console.log("database connected...");
   })
