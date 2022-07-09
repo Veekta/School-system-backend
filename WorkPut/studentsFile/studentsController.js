@@ -190,6 +190,15 @@ const getAClassStudent = async (req, res) => {
   }
 };
 
+const getClass = async (req, res) => {
+  try {
+    const users = await classModel.findById(req.params.classID);
+    res.status(200).json({ message: "Student found", data: users });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 const deleteStudentFromAdmin = async (req, res) => {
   try {
     const remove = await studentModel.findByIdAndRemove(req.params.id);
@@ -339,4 +348,5 @@ module.exports = {
   deleteFromTeacher,
   getTeacherSchool,
   deleteStudenFromClass,
+  getClass,
 };

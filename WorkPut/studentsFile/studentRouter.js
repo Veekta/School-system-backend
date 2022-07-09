@@ -10,6 +10,7 @@ const {
   getTeacher,
   deleteStudenFromClass,
   deleteFromTeacher,
+  getClass,
   deleteStudentFromAdmin,
 } = require("../studentsFile/studentsController");
 
@@ -39,6 +40,7 @@ router.route("/:id/:teacher").delete(deleteFromTeacher);
 //Teacher ID
 router.route("/:id").get(getStudent);
 
+router.route("/:classID/classy").get(getClass);
 router.route("/:classID/students").get(getAClassStudent);
 
 // router.route("/:id").patch(updateStudent).delete(deleteStudent);
