@@ -44,7 +44,7 @@ const verifiedMail = async (email, user) => {
       html: `
             <h3>
                 This mail, is for account verification... Please use the <a
-                href="https://sckoolkod.vercel.app/api/admin/${user}/${token}"
+                href="http://localhost:3000/api/admin/${user}/${token}"
                 >Link to Finish</a> up your account creation 
             </h3>
             `,
@@ -83,9 +83,7 @@ const reSendMail = async (email, user, code) => {
       html: `
 <h3>
     This mail, is for account verification... Please use the <a
-    href="https://sckoolkod.vercel.app/api/admin/${user._id}/${
-        code.split(" ")[-1]
-      }"
+    href="http://localhost:3000/api/admin/${user._id}/${code.split(" ")[-1]}"
     >Link to Finish</a> up your account creation 
 </h3>
 `,
@@ -124,7 +122,7 @@ const resetMail = async (email, user) => {
       html: `
     <h3>
         This mail, is sent because you requested for a password reset... Please use the <a
-        href="https://sckoolkod.vercel.app/api/admin/reset/${user._id}/${token}"
+        href="http://localhost:3000/api/admin/reset/${user._id}/${token}"
         >Link to Finish</a> up your password reset request!  
     </h3>
     `,
@@ -164,7 +162,7 @@ const verifiedTeacherMail = async (email, newTeacher, code) => {
       html: `
             <h3>
                 This mail, is for account verification for Teachers on Skuul platform... Please use the <a
-                href="https://sckoolkod.vercel.app/api/teacher/${newTeacher}/${code}"
+                href="http://localhost:3000/api/teacher/${newTeacher}/${code}"
                 >Link to Finish</a> up your account creation 
             </h3>
             `,
@@ -203,7 +201,7 @@ const reSendTeacherMail = async (email, user, code) => {
       html: `
 <h3>
     This mail, is for account verification... Please use the <a
-    href="https://sckoolkod.vercel.app/api/teacher/${user._id}/${user.schoolCode}"
+    href="http://localhost:3000/api/teacher/${user._id}/${user.schoolCode}"
     >Link to Finish</a> up your account creation 
 </h3>
 `,
@@ -242,7 +240,7 @@ const resetTeacherMail = async (email, user) => {
       html: `
     <h3>
         This mail, is sent because you requested for a password reset... Please use the <a
-         href="https://sckoolkod.vercel.app/api/teacher/${user._id}/${user.schoolCode}"
+         href="http://localhost:3000/api/teacher/${user._id}/${user.schoolCode}"
         /api/admin/reset/${user._id}/${token}"
         >Link to Finish</a> up your password reset request!  
     </h3>
